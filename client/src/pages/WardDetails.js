@@ -2,37 +2,61 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const WardDetails = () => {
-  const [roomDetails, setRoomDetails] = useState({});
+  const [wardDetails, setWardDetails] = useState({});
 
-  const handleMedicalServiceSubmit = event => {
+  const handleWardSubmit = event => {
     event.preventDefault();
 
     const form = event.target;
 
     const wardId = form.wardId.value;
     const wardType = form.wardType.value;
-    const wardRate = form.wordRate.value;
+    const wardRate = form.wardRate.value;
 
     const notes = form.notes.value;
 
-    const roomDetailTemp = { wardId, wardType, wardRate, notes };
+    const wardDetailTemp = { wardId, wardType, wardRate, notes };
 
-    setRoomDetails(roomDetailTemp);
+    setWardDetails(wardDetailTemp);
+
+    init();
   };
 
-  console.log('Inside room details:');
-  console.log(roomDetails);
+  const init = async () => {
+    console.log('inside wardDetails init');
+    console.log(wardDetails);
+    try {
+      const wardService = await axios.post(
+        'http://localhost:5000/api/createWard',
+        {
+          wardId: wardDetails.wardId,
+          wardType: wardDetails.wardType,
+          wardRate: wardDetails.wardRate,
+          notes: wardDetails.notes,
+        }
+      );
+
+      if (wardService) {
+        console.log(wardService);
+        toast.success(wardService.data.message);
+        alert(wardService.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <Nav />
 
-      <form
-        onSubmit={handleMedicalServiceSubmit}
-        className="w-3/6 mx-auto my-10"
-      >
+      <ToastContainer />
+
+      <form onSubmit={handleWardSubmit} className="w-3/6 mx-auto my-10">
         <h3 className="text-2xl text-center font-bold my-5">Add a Ward</h3>
         {/* hr */}
         <div className="space-x-5 text-center my-10">

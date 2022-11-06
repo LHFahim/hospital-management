@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const RoomDetails = () => {
   const [roomDetails, setRoomDetails] = useState({});
@@ -19,14 +22,37 @@ const RoomDetails = () => {
     const roomDetailTemp = { roomId, roomType, roomRate, notes };
 
     setRoomDetails(roomDetailTemp);
+
+    init();
   };
 
-  console.log('Inside room details:');
-  console.log(roomDetails);
+  const init = async () => {
+    try {
+      const roomService = await axios.post(
+        'http://localhost:5000/api/createRoom',
+        {
+          roomId: roomDetails.roomId,
+          roomType: roomDetails.roomType,
+          roomRate: roomDetails.roomRate,
+          notes: roomDetails.notes,
+        }
+      );
+
+      if (roomService) {
+        console.log(roomService);
+        toast.success(roomService.data.message);
+        alert(roomService.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <Nav />
+
+      <ToastContainer />
 
       <form
         onSubmit={handleMedicalServiceSubmit}
@@ -124,6 +150,13 @@ const RoomDetails = () => {
         >
           Submit
         </button>
+        <br />
+        <Link
+          className="hover:text-indigo-600 hover:font-bold "
+          to="/viewRooms"
+        >
+          View rooms here
+        </Link>
       </form>
 
       <Footer />

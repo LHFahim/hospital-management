@@ -1,7 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const MedicalServices = () => {
   const [medicalService, setMedicalService] = useState({});
@@ -10,12 +13,6 @@ const MedicalServices = () => {
     event.preventDefault();
 
     const form = event.target;
-    // console.log('Inside handleMedicalServiceSubmit()');
-    // console.log(form.serviceName.value);
-    // console.log(form.serviceId.value);
-    // console.log(form.charge.value);
-    // console.log(form.duration.value);
-    // console.log(form.notes.value);
 
     const serviceId = form.serviceId.value;
     const serviceName = form.serviceName.value;
@@ -26,7 +23,30 @@ const MedicalServices = () => {
     const service = { serviceId, serviceName, charge, duration, notes };
 
     setMedicalService(service);
-    alert(medicalService.serviceId)
+    alert(medicalService.serviceId);
+  };
+
+  const handleAddMedicalServiceSubmit = async () => {
+    try {
+      const postService = await axios.post(
+        'http://localhost:5000/api/createService',
+        {
+          serviceId: medicalService.serviceId,
+          serviceName: medicalService.serviceName,
+          charge: medicalService.charge,
+          duration: medicalService.duration,
+          notes: medicalService.notes,
+        }
+      );
+
+      if (postService) {
+        console.log(postService);
+        toast.success(postService.data.message);
+        alert(postService.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   console.log(medicalService);
@@ -34,6 +54,8 @@ const MedicalServices = () => {
   return (
     <div>
       <Nav />
+
+      <ToastContainer />
 
       <form
         onSubmit={handleMedicalServiceSubmit}
@@ -147,11 +169,19 @@ const MedicalServices = () => {
 
         {/* submit btn */}
         <button
+          onClick={handleAddMedicalServiceSubmit}
           type="submit"
           className="mt-5 text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold  rounded-lg text-md w-full sm:w-auto px-10 py-3 text-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Submit
         </button>
+        <br />
+        <Link
+          className="hover:text-indigo-600 hover:font-bold "
+          to="/viewMedicalServices"
+        >
+          View medical services here
+        </Link>
       </form>
 
       <Footer />

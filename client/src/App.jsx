@@ -16,7 +16,7 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Form />} />
+        {/* <Route path="/" element={<Form />} /> */}
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/AddDoctor" element={<AddDoctor />} />

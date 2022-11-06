@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
+import axios from 'axios';
 
 const ViewWardDetails = () => {
+  const [ward, setWard] = useState([]);
+
+  const API_URL = 'http://localhost:5000/api/fetchWard';
+
+  const fetchData = async () => {
+    const { data } = await axios.get(API_URL);
+    setWard(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Nav />
@@ -15,14 +30,18 @@ const ViewWardDetails = () => {
             <th className="p-5">Ward rate</th>
             <th className="p-5">Notes</th>
           </thead>
-          <tbody>
-            <tr className=" border border-blue-900  hover:bg-blue-100">
-              <td>1</td>
-              <td>AC</td>
-              <td>200 BDT</td>
-              <td>Don't eat for 8 hours</td>
-            </tr>
-          </tbody>
+          {ward.map(data => {
+            return (
+              <tbody key={data._id}>
+                <tr className=" border border-blue-900  hover:bg-blue-100">
+                  <td>{data._id.substring(0, 5)}</td>
+                  <td>{data.wardType}</td>
+                  <td>{data.wardRate}</td>
+                  <td>{data.notes}</td>
+                </tr>
+              </tbody>
+            );
+          })}
         </table>
       </section>
 
