@@ -39,3 +39,45 @@ exports.fetchAppointment = async(req, res) => {
 
     }
 }
+
+
+exports.updateAppointment = async (req, res)=>{
+
+    const id =req.params.id
+    
+    try {
+        const updateApointment = await Appointment.findOneAndUpdate({_id: id}, {
+
+            scheduleId: req.body.scheduleId,
+            doctorId: req.body.doctorId,
+            TimeIn: req.body.TimeIn,
+            TimeOut: req.body.TimeOut,
+            AvailableDate: req.body.AvailableDate,
+            Note: req.body.Note,
+    
+        }, {new: true});
+
+        if (updateApointment) {
+            return res.status(200).json({ message: "Appointment updated succesfully" })
+        }
+
+    } catch (error) {
+        return res.status(400).json(error)
+    }
+
+}
+
+exports.deleteAppointment = async (req, res)=>{
+
+    const id = req.params.id
+
+    try {
+        const deleteAppointment = await Appointment.findOneAndDelete({_id: id});
+
+        if (deleteAppointment) {
+            return res.status(200).json({ message: "Appointment deleted succesfully" })
+        }
+    } catch (error) {
+        return res.status(400).json(error)
+    }
+}

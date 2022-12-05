@@ -18,6 +18,14 @@ function ViewRoomDetails() {
     fetchData();
   }, []);
 
+  const handleDelete = async _id => {
+    const result = await axios.delete(
+      `http://localhost:5000/api/deleteRooms/${_id}`
+    );
+    alert(result.data.message);
+    window.location.reload(false);
+  };
+
   return (
     <>
       <Nav />
@@ -28,16 +36,27 @@ function ViewRoomDetails() {
             <th className="p-5">Room ID</th>
             <th className="p-5">Room type</th>
             <th className="p-5">Room rate</th>
+
             <th className="p-5">Notes</th>
           </thead>
           {room.map(data => {
             return (
               <tbody key={data._id}>
                 <tr className=" border border-blue-900  hover:bg-blue-100">
-                  <td>{data._id.substring(0, 1)}</td>
+                  <td>{data.roomid}</td>
                   <td>{data.roomType}</td>
                   <td>{data.roomRate} BDT</td>
+
                   <td>{data.notes}</td>
+                  <td className="p-5">
+                    <button
+                      onClick={() => {
+                        handleDelete(data._id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             );

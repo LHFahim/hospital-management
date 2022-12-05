@@ -20,6 +20,14 @@ function ViewMedicalServices() {
     fetchData();
   }, []);
 
+  const handleDelete = async _id => {
+    const result = await axios.delete(
+      `http://localhost:5000/api/deleteServices/${_id}`
+    );
+    alert(result.data.message);
+    window.location.reload(false);
+  };
+
   return (
     <>
       <Nav />
@@ -42,6 +50,15 @@ function ViewMedicalServices() {
                   <td>{data.duration}</td>
                   <td>{data.charge}</td>
                   <td>{data.notes}</td>
+                  <td className="p-5">
+                    <button
+                      onClick={() => {
+                        handleDelete(data._id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             );

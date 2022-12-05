@@ -1,10 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema({
-    roomid: Number,
-    roomType: String,
-    roomRate: Number,
-    notes: String,
-})
+  roomid: String,
+  roomType: String,
+  roomRate: String,
+  notes: String,
+  isUsed: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-module.exports = mongoose.model('RoomDetails', roomSchema);
+module.exports = mongoose.model("RoomDetails", roomSchema);

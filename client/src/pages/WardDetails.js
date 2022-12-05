@@ -6,24 +6,44 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
 const WardDetails = () => {
-  const [wardDetails, setWardDetails] = useState({});
+  const [wardDetails, setWardDetails] = useState({
+    wardId: '',
+    wardType: '',
+    wardRate: '',
+    notes: '',
+  });
 
-  const handleWardSubmit = event => {
+  // const handleWardSubmit = event => {
+  //   event.preventDefault();
+
+  //   const form = event.target;
+
+  //   const wardId = form.wardId.value;
+  //   const wardType = form.wardType.value;
+  //   const wardRate = form.wardRate.value;
+
+  //   const notes = form.notes.value;
+
+  //   const wardDetailTemp = { wardId, wardType, wardRate, notes };
+
+  //   setWardDetails(wardDetailTemp);
+
+  //   init();
+  // };
+
+  const handleChange = event => {
     event.preventDefault();
 
-    const form = event.target;
+    const name = event.target.name;
+    const value = event.target.value;
+    console.log(name, value);
 
-    const wardId = form.wardId.value;
-    const wardType = form.wardType.value;
-    const wardRate = form.wardRate.value;
-
-    const notes = form.notes.value;
-
-    const wardDetailTemp = { wardId, wardType, wardRate, notes };
-
-    setWardDetails(wardDetailTemp);
-
-    init();
+    setWardDetails(prevDoc => {
+      return {
+        ...prevDoc,
+        [name]: value,
+      };
+    });
   };
 
   const init = async () => {
@@ -56,7 +76,7 @@ const WardDetails = () => {
 
       <ToastContainer />
 
-      <form onSubmit={handleWardSubmit} className="w-3/6 mx-auto my-10">
+      <form className="w-3/6 mx-auto my-10">
         <h3 className="text-2xl text-center font-bold my-5">Add a Ward</h3>
         {/* hr */}
         <div className="space-x-5 text-center my-10">
@@ -66,6 +86,7 @@ const WardDetails = () => {
         {/* ward ID */}
         <div className="relative z-0 mb-6 w-2/12 group">
           <input
+            onChange={handleChange}
             type="text"
             name="wardId"
             id="floating_ward_id"
@@ -86,6 +107,7 @@ const WardDetails = () => {
           <div className="grid md:grid-cols-2 md:gap-56">
             <div className="relative z-0 mb-6 w-full group">
               <input
+                onChange={handleChange}
                 type="text"
                 name="wardType"
                 id="floating_wardType"
@@ -104,6 +126,7 @@ const WardDetails = () => {
             {/* ward rate*/}
             <div className="relative z-0 mb-6 w-full group">
               <input
+                onChange={handleChange}
                 type="text"
                 name="wardRate"
                 id="floating_wardRate"
@@ -125,6 +148,7 @@ const WardDetails = () => {
             {/* additional notes*/}
             <div className="relative z-0 mb-6 w-full group">
               <input
+                onChange={handleChange}
                 type="text"
                 name="notes"
                 id="floating_notes"
@@ -144,6 +168,7 @@ const WardDetails = () => {
 
         {/* submit btn */}
         <button
+          onClick={init}
           type="submit"
           className="my-5 text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold  rounded-lg text-md w-full sm:w-auto px-10 py-3 text-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >

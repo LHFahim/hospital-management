@@ -4,6 +4,7 @@ import Nav from '../components/Nav';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Appoinment = () => {
   const [appointments, setAppointments] = useState({
@@ -15,7 +16,7 @@ const Appoinment = () => {
     notes: '',
   });
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
     console.log(name, value);
@@ -28,31 +29,29 @@ const Appoinment = () => {
     });
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     try {
+      const postAppointment = await axios.post(
+        'http://localhost:5000/api/createAppointment',
+        {
+          scheduleId: appointments.scheduleId,
+          doctorId: appointments.doctorId,
+          TimeIn: appointments.timeIn,
+          TimeOut: appointments.timeOut,
+          AvailableDate: appointments.availableDays,
+          Note: appointments.notes,
+        }
+      );
 
-      const postAppointment = await axios.post('http://localhost:5000/api/createAppointment', {
-        scheduleId: appointments.scheduleId,
-        doctorId: appointments.doctorId,
-        TimeIn: appointments.timeIn,
-        TimeOut: appointments.timeOut,
-        AvailableDate: appointments.availableDays,
-        Note: appointments.notes,
-            
-            
-      })
-
-      if(postAppointment){
-        console.log(postAppointment)
+      if (postAppointment) {
+        console.log(postAppointment);
         toast.success(postAppointment.data.message);
-        alert(postAppointment.data.message)
+        alert(postAppointment.data.message);
       }
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
- 
-  }
+  };
   return (
     <div>
       <Nav />
@@ -187,6 +186,14 @@ const Appoinment = () => {
         >
           Submit
         </button>
+
+        <br />
+        <Link
+          className="hover:text-indigo-600 hover:font-bold "
+          to="/viewAppointments"
+        >
+          View appointments here
+        </Link>
       </form>
       {/* form ends */}
       <Footer />

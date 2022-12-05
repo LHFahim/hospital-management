@@ -6,32 +6,36 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 const RoomDetails = () => {
-  const [roomDetails, setRoomDetails] = useState({});
+  const [roomDetails, setRoomDetails] = useState({
+    roomId: '',
+    roomType: '',
+    roomRate: '',
+    notes: '',
+  });
 
-  const handleMedicalServiceSubmit = event => {
+  const handleChange = event => {
     event.preventDefault();
 
-    const form = event.target;
+    const name = event.target.name;
+    const value = event.target.value;
+    console.log(name, value);
 
-    const roomId = form.roomId.value;
-    const roomType = form.roomType.value;
-    const roomRate = form.rate.value;
-
-    const notes = form.notes.value;
-
-    const roomDetailTemp = { roomId, roomType, roomRate, notes };
-
-    setRoomDetails(roomDetailTemp);
-
-    init();
+    setRoomDetails(prevDoc => {
+      return {
+        ...prevDoc,
+        [name]: value,
+      };
+    });
   };
 
-  const init = async () => {
+  const init = async e => {
+    console.log(roomDetails);
+    e.preventDefault();
     try {
       const roomService = await axios.post(
         'http://localhost:5000/api/createRoom',
         {
-          roomId: roomDetails.roomId,
+          roomid: roomDetails.roomId,
           roomType: roomDetails.roomType,
           roomRate: roomDetails.roomRate,
           notes: roomDetails.notes,
@@ -39,6 +43,7 @@ const RoomDetails = () => {
       );
 
       if (roomService) {
+        console.log('roomService =>');
         console.log(roomService);
         toast.success(roomService.data.message);
         alert(roomService.data.message);
@@ -54,10 +59,7 @@ const RoomDetails = () => {
 
       <ToastContainer />
 
-      <form
-        onSubmit={handleMedicalServiceSubmit}
-        className="w-3/6 mx-auto my-10"
-      >
+      <form className="w-3/6 mx-auto my-10">
         <h3 className="text-2xl text-center font-bold my-5">Add a Room</h3>
         {/* hr */}
         <div className="space-x-5 text-center my-10">
@@ -67,6 +69,7 @@ const RoomDetails = () => {
         {/* room ID */}
         <div className="relative z-0 mb-6 w-2/12 group">
           <input
+            onChange={handleChange}
             type="text"
             name="roomId"
             id="floating_room_id"
@@ -87,6 +90,7 @@ const RoomDetails = () => {
           <div className="grid md:grid-cols-2 md:gap-56">
             <div className="relative z-0 mb-6 w-full group">
               <input
+                onChange={handleChange}
                 type="text"
                 name="roomType"
                 id="floating_roomType"
@@ -105,8 +109,9 @@ const RoomDetails = () => {
             {/* room rate*/}
             <div className="relative z-0 mb-6 w-full group">
               <input
+                onChange={handleChange}
                 type="text"
-                name="rate"
+                name="roomRate"
                 id="floating_rate"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
@@ -126,6 +131,7 @@ const RoomDetails = () => {
             {/* additional notes*/}
             <div className="relative z-0 mb-6 w-full group">
               <input
+                onChange={handleChange}
                 type="text"
                 name="notes"
                 id="floating_notes"
@@ -145,6 +151,7 @@ const RoomDetails = () => {
 
         {/* submit btn */}
         <button
+          onClick={init}
           type="submit"
           className="mt-5 text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold  rounded-lg text-md w-full sm:w-auto px-10 py-3 text-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >

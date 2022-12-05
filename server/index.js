@@ -11,6 +11,8 @@ const AppointmentRoute = require("./Routes/appointment");
 const servicesRoute = require("./Routes/services");
 const RoomRoute = require("./Routes/room");
 const wardRoute = require("./Routes/ward");
+const medichinedtlsRoute = require("./Routes/medichinedtls");
+const patientRoute = require("./Routes/patient");
 
 const port = process.env.PORT || 5000;
 
@@ -29,6 +31,8 @@ app.use("/api", AppointmentRoute);
 app.use("/api", servicesRoute);
 app.use("/api", RoomRoute);
 app.use("/api", wardRoute);
+app.use("/api", medichinedtlsRoute);
+app.use("/api", patientRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

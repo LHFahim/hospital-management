@@ -4,41 +4,31 @@ import Nav from '../components/Nav';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Link } from 'react-router-dom';
 
 function AddDoctor() {
-
-
-
   // ---------------------auto add id---------------------
 
   const [posts, setPosts] = useState([]);
 
-    const API_URL = 'http://localhost:5000/api/fetchDoctor';
+  const API_URL = 'http://localhost:5000/api/fetchDoctor';
 
-    const fetchData = async () => {
-      const { data } = await axios.get(API_URL);
-      setPosts(data);
-      console.log(data);
-    };
+  const fetchData = async () => {
+    const { data } = await axios.get(API_URL);
+    setPosts(data);
+    console.log(data);
+  };
 
-    useEffect(() => {
-      fetchData();
-    }, []); 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    
-   const doctorId = posts.length;
-   const nextId = doctorId+1;
-   
-   console.log(nextId)
+  const doctorId = posts.length;
+  const nextId = doctorId + 1;
 
+  console.log(nextId);
 
-
-
-
-
-
-// ---------------Posting Data----------------------------
+  // ---------------Posting Data----------------------------
 
   const [doctor, setDoctor] = useState({
     id: '',
@@ -58,38 +48,38 @@ function AddDoctor() {
     note: '',
   });
 
- 
+  const handleClick = async e => {
+    e.preventDefault();
 
-  const handleClick = async() => {
     try {
+      const postDoctor = await axios.post(
+        'http://localhost:5000/api/createDoctor',
+        {
+          firstName: doctor.firstName,
+          lastName: doctor.lastName,
+          gender: doctor.gender,
+          nicNumber: doctor.nic,
+          homeTelephone: doctor.homePhone,
+          mobile: doctor.personalPhone,
+          address: doctor.address,
+          qualifiqation: doctor.qualification,
+          specialization: doctor.specialization,
+          doctorType: doctor.doctorType,
+          charge: doctor.visitingCharge,
+          note: doctor.note,
+          chanelingCharge: doctor.chanelingCharge,
+          salery: doctor.salary,
+        }
+      );
 
-      const postDoctor = await axios.post('http://localhost:5000/api/createDoctor', {
-        firstName: doctor.firstName,
-            lastName: doctor.lastName,
-            gender: doctor.gender,
-            nicNumber: doctor.nic,
-            homeTelephone: doctor.homePhone,
-            mobile: doctor.personalPhone,
-            address: doctor.address,
-            qualifiqation: doctor.qualification,
-            specialization: doctor.specialization,
-            doctorType: doctor.doctorType,
-            charge: doctor.visitingCharge,
-            note: doctor.note,
-            chanelingCharge: doctor.chanelingCharge,
-            salery: doctor.salary,
-      })
-
-      if(postDoctor){
-        console.log(postDoctor)
+      if (postDoctor) {
+        console.log(postDoctor);
         toast.success(postDoctor.data.message);
       }
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
- 
-  }
+  };
 
   function handleChange(event) {
     const name = event.target.name;
@@ -113,8 +103,6 @@ function AddDoctor() {
       <form className="w-3/6 mx-auto my-10">
         <h3 className="text-2xl text-center font-bold my-5">Doctor Details</h3>
         {/* doctor ID */}
-        
-          <h1><b>ID: {nextId}</b></h1>
 
         {/* hr */}
         <div className="space-x-5 text-center my-10">
@@ -428,6 +416,13 @@ function AddDoctor() {
         >
           Submit
         </button>
+        <br />
+        <Link
+          className="hover:text-indigo-600 hover:font-bold "
+          to="/ViewDoctor"
+        >
+          View doctors here
+        </Link>
       </form>
 
       <Footer />
