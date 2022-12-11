@@ -21,6 +21,16 @@ function PatientView() {
     fetchData();
   }, []);
 
+  const dischargePatient = async _id => {
+    console.log(_id);
+
+    const result = await axios.post(
+      `http://localhost:5000/api/deleteAppointment/${_id}`
+    );
+    // alert(result.data.message);
+    // window.location.reload(false);
+  };
+
   return (
     <>
       <Nav />
@@ -28,8 +38,6 @@ function PatientView() {
       <section className="py-10 w-5/6 mx-auto">
         <table>
           <thead className="space-x-10">
-            {/* <th>ID</th> */}
-            {/* <th>First name</th> */}
             <th>Name</th>
             <th>Gender</th>
             <th>Type</th>
@@ -38,6 +46,7 @@ function PatientView() {
             <th>Address</th>
             <th>Room</th>
             <th>Ward</th>
+            <th>Action</th>
           </thead>
 
           {posts.map(data => {
@@ -52,6 +61,12 @@ function PatientView() {
                   <td className="p-5">{data.address}</td>
                   <td className="p-5">{data.roomId}</td>
                   <td className="p-5">{data.wardId}</td>
+                  <td className="p-5">
+                    {' '}
+                    <button onClick={() => dischargePatient(data._id)}>
+                      Discharge
+                    </button>{' '}
+                  </td>
                 </tr>
               </tbody>
             );
