@@ -25,7 +25,7 @@ function PatientView() {
     console.log(_id);
 
     const result = await axios.post(
-      `http://localhost:5000/api/deleteAppointment/${_id}`
+      `http://localhost:5000/api/dischargePatient/${_id}`
     );
     // alert(result.data.message);
     // window.location.reload(false);
