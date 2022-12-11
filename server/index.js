@@ -17,7 +17,7 @@ const patientRoute = require("./Routes/patient");
 const port = process.env.PORT || 5000;
 
 mongoose
-  .connect(`mongodb://localhost:27017/hospitalManagemnet`, {
+  .connect(`mongodb://0.0.0.0:27017/hospital-managemnet`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
