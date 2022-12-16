@@ -1,7 +1,8 @@
 const Patient = require("../Models/patient");
 const Room = require("../Models/room");
 const Ward = require("../Models/ward");
-const Medicine = require('../Models/medichinedtls');
+const Medicine = require("../Models/medichinedtls");
+var intervalToDuration = require("date-fns/intervalToDuration");
 
 exports.createPatient = async (req, res) => {
   try {
@@ -44,12 +45,11 @@ exports.createPatient = async (req, res) => {
         { new: true }
       );
 
-      console.log(findroom);
-
       if (!findroom) {
         return res.status(200).json({ message: "Invalid Room ID" });
-        // throw new NotFoundException("Invalid Room ID");
       }
+
+      newPatient.totalCost = findroom.roomRate;
     }
 
     if (req.body.wardId) {
@@ -161,13 +161,33 @@ exports.dischargePatient = async (req, res) => {
   try {
     id = req.params.id;
 
-    console.log(id);
-
     const updatePatient = await Patient.findOneAndUpdate(
       { _id: id },
       { isDischarged: true },
       { new: true }
     );
+
+    await Room.findOneAndUpdate(
+      { roomId: updatePatient.roomId },
+      { isUsed: false }
+    );
+
+    const numberOfDays = intervalToDuration({
+      start: new Date(updatePatient.createdAt),
+      end: new Date(),
+    });
+
+    const foundTotalCost = Number(updatePatient.totalCost);
+
+    const foundRoom = await Room.findOne({ roomId: updatePatient.roomId });
+
+    let finalTotalCost = numberOfDays.days * Number(foundRoom.roomRate);
+    finalTotalCost -= foundRoom.roomRate;
+    finalTotalCost += foundTotalCost;
+
+    updatePatient.totalCost = finalTotalCost;
+
+    updatePatient.save();
 
     if (updatePatient) {
       return res
@@ -179,19 +199,35 @@ exports.dischargePatient = async (req, res) => {
   }
 };
 
-
-exports.buyMedichine =async (req, res)=>{
+exports.buyMedichine = async (req, res) => {
   try {
     const id = req.params.id;
     const medicineId = req.params.medicineId;
 
-    const medicineDetails = await Medicine.findOne({productID: medicineId});
-    const medicinePrice = medicineDetails.unitprice
-    
+    const medicineDetails = await Medicine.findOne({ _id: medicineId });
+    const medicinePrice = medicineDetails.unitprice;
 
-    console.log(id, medicineId);
+    const foundPatient = await Patient.findOne({ personalPhone: id });
 
+    const foundCost = Number(foundPatient.medicineCost);
+
+    const totalMedicineCost = foundCost + Number(medicinePrice);
+
+    foundPatient.medicineCost = totalMedicineCost;
+
+    const foundTotalCost = Number(foundPatient.totalCost);
+
+    const finalTotalCost = foundTotalCost + totalMedicineCost;
+
+    foundPatient.totalCost = finalTotalCost;
+
+    foundPatient.save();
+
+    const unitsInStock = Number(medicineDetails.unitsInStoct);
+    medicineDetails.unitsInStoct = unitsInStock - 1;
+
+    medicineDetails.save();
   } catch (error) {
-    return res.send(error)
+    return res.send(error);
   }
-}
+};

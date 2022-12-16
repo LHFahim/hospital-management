@@ -14,7 +14,7 @@ function PatientView() {
   const fetchData = async () => {
     const { data } = await axios.get(API_URL);
     setPosts(data);
-    // console.log(data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -47,6 +47,7 @@ function PatientView() {
             <th>Discharged</th>
             <th>Action</th>
             <th>Medicine</th>
+            <th>Total cost</th>
           </thead>
 
           {posts.map(data => {
@@ -75,6 +76,7 @@ function PatientView() {
                       Click
                     </Link>
                   </td>
+                  <td>{data.totalCost}</td>
                 </tr>
               </tbody>
             );

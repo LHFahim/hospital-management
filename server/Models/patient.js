@@ -14,8 +14,12 @@ const patientSchema = new mongoose.Schema(
     isDischarged: Boolean,
     medicineCost: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
+    totalCost: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

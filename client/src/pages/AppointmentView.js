@@ -43,6 +43,7 @@ function AppointmentView() {
             <th>Time out</th>
             <th>Available date</th>
             <th>Note</th>
+            <th>Patient's phone</th>
             <th>Action</th>
           </thead>
 
@@ -56,6 +57,7 @@ function AppointmentView() {
                   <td className="p-5">{data.TimeOut}</td>
                   <td className="p-5">{data.AvailableDate}</td>
                   <td className="p-5">{data.Note}</td>
+                  <td className="p-5">{data.patientPhone}</td>
                   <td className="p-5">
                     <button
                       onClick={() => {
