@@ -9,6 +9,7 @@ const {
   deletePatient,
   findPatient,
   dischargePatient,
+  buyMedichine
 } = require("../Controllers/patient");
 
 router.post("/createPatient", createPatient);
@@ -17,5 +18,6 @@ router.put("/updatePatient/:id", updatePatient);
 router.delete("/deletePatient/:id", deletePatient);
 router.post("/findPatient", findPatient);
 router.post("/dischargePatient/:id", dischargePatient);
+router.post("/buy-medicine/:id/:medicineId", buyMedichine);
 
 module.exports = router;

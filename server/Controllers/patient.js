@@ -1,6 +1,7 @@
 const Patient = require("../Models/patient");
 const Room = require("../Models/room");
 const Ward = require("../Models/ward");
+const Medicine = require('../Models/medichinedtls');
 
 exports.createPatient = async (req, res) => {
   try {
@@ -177,3 +178,20 @@ exports.dischargePatient = async (req, res) => {
     return res.status(400).json(error);
   }
 };
+
+
+exports.buyMedichine =async (req, res)=>{
+  try {
+    const id = req.params.id;
+    const medicineId = req.params.medicineId;
+
+    const medicineDetails = await Medicine.findOne({productID: medicineId});
+    const medicinePrice = medicineDetails.unitprice
+    
+
+    console.log(id, medicineId);
+
+  } catch (error) {
+    return res.send(error)
+  }
+}

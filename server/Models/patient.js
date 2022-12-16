@@ -12,6 +12,10 @@ const patientSchema = new mongoose.Schema(
     roomId: String,
     wardID: String,
     isDischarged: Boolean,
+    medicineCost: {
+      type: Number,
+      default: 0
+    }
   },
   {
     timestamps: true,
