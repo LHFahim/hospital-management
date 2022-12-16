@@ -7,35 +7,33 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 
 function PatientRegister() {
-  // ---------------Posting Data----------------------------
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
+  const [admission_date, setAdmission_date] = useState('');
+  const [personalPhone, setPersonalPhone] = useState('');
+  const [referral, setReferral] = useState('');
+  const [patient_type, setPatient_type] = useState('');
+  const [address, setAddress] = useState('');
+  const [roomId, setRoomId] = useState('');
+  const [wardId, setWardId] = useState('');
 
-  const [patient, setPatient] = useState({
-    patient_name: '',
-    gender: '',
-    admission_date: '',
-    personalPhone: '',
-    referral: '',
-    patient_type: '',
-    address: '',
-    roomId: '',
-    wardId: '',
-  });
+  const handleClick = async event => {
+    event.preventDefault();
+    console.log('inside patient register handle click');
 
-  const handleClick = async e => {
-    e.preventDefault();
     try {
       const postPatient = await axios.post(
         'http://localhost:5000/api/createPatient',
         {
-          patientName: patient.patient_name,
-          gender: patient.gender,
-          personalPhone: patient.personalPhone,
-          address: patient.address,
-          referral: patient.referredDoctor,
-          patientType: patient.patient_type,
-          roomId: patient.roomId,
-          wardId: patient.wardId,
-          admitionDate: patient.admission_date,
+          patientName: name,
+          gender: gender,
+          personalPhone: personalPhone,
+          address: address,
+          referral: referral,
+          patientType: patient_type,
+          roomId: roomId,
+          wardId: wardId,
+          admitionDate: admission_date,
         }
       );
       if (postPatient) {
@@ -47,20 +45,17 @@ function PatientRegister() {
     }
   };
 
-  function handleChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-    // console.log(name, value);
+  // function handleChange(event) {
+  //   const name = event.target.name;
+  //   const value = event.target.value;
 
-    setPatient(prevPatient => {
-      return {
-        ...prevPatient,
-        [name]: value,
-      };
-    });
-  }
-
-  console.log(patient);
+  //   setPatient(prevPatient => {
+  //     return {
+  //       ...prevPatient,
+  //       [name]: value,
+  //     };
+  //   });
+  // }
 
   return (
     <>
@@ -83,7 +78,7 @@ function PatientRegister() {
             {/* patient name */}
             <div className="relative z-0 mb-6 w-full group">
               <input
-                onChange={handleChange}
+                onChange={e => setName(e.target.value)}
                 type="text"
                 name="patient_name"
                 id="floating_patient_name"
@@ -105,7 +100,7 @@ function PatientRegister() {
             <div className="relative z-0 mb-6 w-full group flex space-x-5 ">
               <div className="space-x-3">
                 <input
-                  onChange={handleChange}
+                  onChange={e => setGender(e.target.value)}
                   type="radio"
                   value="male"
                   name="gender"
@@ -118,7 +113,7 @@ function PatientRegister() {
               <br />
               <div className="space-x-3">
                 <input
-                  onChange={handleChange}
+                  onChange={e => setGender(e.target.value)}
                   type="radio"
                   value="female"
                   name="gender"
@@ -132,7 +127,7 @@ function PatientRegister() {
             {/* admission date */}
             <div className="relative z-0 mb-6 w-full group">
               <input
-                onChange={handleChange}
+                onChange={e => setAdmission_date(e.target.value)}
                 type="date"
                 name="admission_date"
                 id="floating_admission_date"
@@ -153,7 +148,7 @@ function PatientRegister() {
             {/* personal phone */}
             <div className="relative z-0 mb-6 w-full group">
               <input
-                onChange={handleChange}
+                onChange={e => setPersonalPhone(e.target.value)}
                 type="tel"
                 name="personalPhone"
                 id="floating_personal_phone"
@@ -174,7 +169,7 @@ function PatientRegister() {
             {/* address */}
             <div className="mt-1 relative z-0 mb-6 w-full group">
               <textarea
-                onChange={handleChange}
+                onChange={e => setAddress(e.target.value)}
                 type="text"
                 name="address"
                 id="floating_address"
@@ -195,7 +190,7 @@ function PatientRegister() {
               {/* referral*/}
               <div className="relative z-0 mb-6 w-full group">
                 <input
-                  onChange={handleChange}
+                  onChange={e => setReferral(e.target.value)}
                   type="text"
                   name="referral"
                   id="floating_referral"
@@ -217,7 +212,7 @@ function PatientRegister() {
                 <select
                   name="patient_type"
                   id="patient_type"
-                  onChange={handleChange}
+                  onChange={e => setPatient_type(e.target.value)}
                 >
                   <option value="undefined">Select type</option>
                   <option value="Out patient">Out patient</option>
@@ -238,10 +233,9 @@ function PatientRegister() {
         <section id="employee-details">
           <div className="grid md:grid-cols-2 md:gap-56">
             <div>
-              {/* room */}
               <div className="relative z-0 mb-6 w-full group">
                 <input
-                  onChange={handleChange}
+                  onChange={e => setRoomId(e.target.value)}
                   type="text"
                   name="roomId"
                   id="floating_roomId"
@@ -259,10 +253,9 @@ function PatientRegister() {
             </div>
 
             <div className="md:grid-cols-2 md:gap-y-0">
-              {/*  wardId */}
               <div className="relative z-0 mb-6 w-full group">
                 <input
-                  onChange={handleChange}
+                  onChange={e => setWardId(e.target.value)}
                   type="text"
                   name="wardId"
                   id="floating_wardId"

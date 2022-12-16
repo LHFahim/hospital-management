@@ -11,7 +11,7 @@ exports.createPatient = async (req, res) => {
       return res.status(200).json({ message: "This Patient Alredy exist" });
     }
 
-    const newPatient = await new Patient({
+    const newPatient = new Patient({
       address: req.body.address,
       admitionDate: req.body.admitionDate,
       gender: req.body.gender,
@@ -25,7 +25,7 @@ exports.createPatient = async (req, res) => {
 
     if (req.body.roomId) {
       const checkRoom = await Room.find({
-        roomid: req.body.roomId,
+        roomId: req.body.roomId,
         isUsed: false,
       });
 
@@ -117,6 +117,7 @@ exports.updatePatient = async (req, res) => {
         referral: req.body.referral,
         roomId: req.body.roomId,
         wardID: req.body.wardID,
+        isDischarged: false,
       },
       { new: true }
     );
@@ -150,6 +151,28 @@ exports.findPatient = async (req, res) => {
       personalPhone: req.body.personalPhone,
     });
     return res.status(200).json(patient);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
+exports.dischargePatient = async (req, res) => {
+  try {
+    id = req.params.id;
+
+    console.log(id);
+
+    const updatePatient = await Patient.findOneAndUpdate(
+      { _id: id },
+      { isDischarged: true },
+      { new: true }
+    );
+
+    if (updatePatient) {
+      return res
+        .status(200)
+        .json({ message: "Patient Action Updated succesfully" });
+    }
   } catch (error) {
     return res.status(400).json(error);
   }

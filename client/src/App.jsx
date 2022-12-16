@@ -18,6 +18,8 @@ import PatientView from './pages/PatientView';
 import AppointmentView from './pages/AppointmentView';
 import DeleteDoctor from './pages/deleteDoctor';
 import PatientSearch from './pages/PatientSearch';
+import AddPatient from './pages/AddPatient';
+import BuyMedicine from './pages/BuyMedicine';
 
 function App() {
   return (
@@ -44,6 +46,9 @@ function App() {
         <Route path="/viewMedicineDetails" element={<CreateMedicineView />} />
 
         <Route path="/register-patient" element={<PatientRegister />} />
+
+        <Route path="buy-medicine/:id" element={<BuyMedicine />} />
+
         <Route path="/view-patients" element={<PatientView />} />
         <Route path="/search-patients" element={<PatientSearch />} />
       </Routes>

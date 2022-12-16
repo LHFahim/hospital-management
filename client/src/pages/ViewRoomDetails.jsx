@@ -43,7 +43,7 @@ function ViewRoomDetails() {
             return (
               <tbody key={data._id}>
                 <tr className=" border border-blue-900  hover:bg-blue-100">
-                  <td>{data.roomid}</td>
+                  <td>{data.roomId}</td>
                   <td>{data.roomType}</td>
                   <td>{data.roomRate} BDT</td>
 

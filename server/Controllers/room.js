@@ -2,7 +2,7 @@ const Rooms = require("../Models/room");
 
 exports.createRoom = async (req, res) => {
   try {
-    const existedRooms = await Rooms.findOne({ roomid: req.body.roomid });
+    const existedRooms = await Rooms.findOne({ roomId: req.body.roomId });
     if (existedRooms) {
       return res.status(200).json({ message: "This Room Id Alredy exist" });
     }
@@ -10,7 +10,7 @@ exports.createRoom = async (req, res) => {
     console.log(req.body);
 
     const newRoom = new Rooms({
-      roomid: req.body.roomid,
+      roomId: req.body.roomId,
       roomType: req.body.roomType,
       roomRate: req.body.roomRate,
       notes: req.body.notes,
@@ -47,7 +47,7 @@ exports.updateRooms = async (req, res) => {
     const updateRooms = await Rooms.findOneAndUpdate(
       { _id: id },
       {
-        roomid: req.body.roomid,
+        roomId: req.body.roomId,
         roomType: req.body.roomType,
         roomRate: req.body.roomRate,
         notes: req.body.notes,

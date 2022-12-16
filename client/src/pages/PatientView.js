@@ -14,7 +14,7 @@ function PatientView() {
   const fetchData = async () => {
     const { data } = await axios.get(API_URL);
     setPosts(data);
-    console.log(data);
+    // console.log(data);
   };
 
   useEffect(() => {
@@ -22,8 +22,6 @@ function PatientView() {
   }, []);
 
   const dischargePatient = async _id => {
-    console.log(_id);
-
     const result = await axios.post(
       `http://localhost:5000/api/dischargePatient/${_id}`
     );
@@ -46,7 +44,9 @@ function PatientView() {
             <th>Address</th>
             <th>Room</th>
             <th>Ward</th>
+            <th>Discharged</th>
             <th>Action</th>
+            <th>Medicine</th>
           </thead>
 
           {posts.map(data => {
@@ -62,10 +62,18 @@ function PatientView() {
                   <td className="p-5">{data.roomId}</td>
                   <td className="p-5">{data.wardId}</td>
                   <td className="p-5">
+                    {data.isDischarged ? 'Discharged' : 'Not discharged'}
+                  </td>
+                  <td className="p-5">
                     {' '}
                     <button onClick={() => dischargePatient(data._id)}>
                       Discharge
                     </button>{' '}
+                  </td>
+                  <td>
+                    <Link to={`/buy-medicine/${data.personalPhone}`}>
+                      Click
+                    </Link>
                   </td>
                 </tr>
               </tbody>

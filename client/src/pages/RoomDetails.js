@@ -35,7 +35,7 @@ const RoomDetails = () => {
       const roomService = await axios.post(
         'http://localhost:5000/api/createRoom',
         {
-          roomid: roomDetails.roomId,
+          roomId: roomDetails.roomId,
           roomType: roomDetails.roomType,
           roomRate: roomDetails.roomRate,
           notes: roomDetails.notes,

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema({
-  roomid: String,
+  roomId: String,
   roomType: String,
   roomRate: String,
   notes: String,
