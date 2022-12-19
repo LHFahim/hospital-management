@@ -1,74 +1,70 @@
-const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-
-const doctorSchema = new mongoose.Schema({
+const doctorSchema = new mongoose.Schema(
+  {
     _id: Number,
     firstName: {
-        type: String,
-        
+      type: String,
     },
 
     lastName: {
-        type: String,
-        
+      type: String,
     },
 
     gender: {
-        type: String,
-        
+      type: String,
     },
 
     nicNumber: {
-        type: String,
-        
+      type: String,
     },
 
     homeTelephone: {
-        type: String,
+      type: String,
     },
 
     mobile: {
-        type: String,
+      type: String,
     },
 
     address: {
-        type: String,
+      type: String,
     },
 
     qualifiqation: {
-        type: String,
+      type: String,
     },
 
     specialization: {
-        type: String,
+      type: String,
     },
 
     doctorType: {
-        type: String,
+      type: String,
     },
 
     charge: {
-        type: String,
+      type: String,
     },
 
     note: {
-        type: String,
+      type: String,
     },
 
     chanelingCharge: {
-        type: String,
+      type: String,
     },
 
     salery: {
-        type: String,
+      type: String,
     },
 
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-
-
-}, { _id: false })
+    updatedAt: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
 doctorSchema.plugin(AutoIncrement);
 
-module.exports = mongoose.model('Doctors', doctorSchema);
+module.exports = mongoose.model("Doctors", doctorSchema);

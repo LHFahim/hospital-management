@@ -217,7 +217,7 @@ exports.buyMedichine = async (req, res) => {
 
     const foundTotalCost = Number(foundPatient.totalCost);
 
-    const finalTotalCost = foundTotalCost + totalMedicineCost;
+    const finalTotalCost = foundTotalCost + Number(medicinePrice);
 
     foundPatient.totalCost = finalTotalCost;
 

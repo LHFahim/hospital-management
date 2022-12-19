@@ -30,7 +30,8 @@ const Appoinment = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     try {
       const postAppointment = await axios.post(
         'http://localhost:5000/api/createAppointment',

@@ -1,5 +1,6 @@
 const Appointment = require("../Models/appoinment");
 const Patient = require("../Models/patient");
+const Doctor = require("../Models/doctor");
 
 exports.createAppointment = async (req, res) => {
   try {
@@ -18,7 +19,19 @@ exports.createAppointment = async (req, res) => {
       return res.status(200).json({ message: "This patient does not exist!" });
     }
 
-    const newAppointment = await new Appointment({
+    const doctor = await Doctor.find({ nicNumber: req.body.doctorId });
+    console.log(doctor);
+
+    let patientTotalCost = patientExists.totalCost;
+
+    patientTotalCost += Number(doctor[0].charge);
+    console.log(patientTotalCost, typeof patientTotalCost);
+
+    patientExists.totalCost = patientTotalCost;
+
+    patientExists.save();
+
+    const newAppointment = new Appointment({
       scheduleId: req.body.scheduleId,
       doctorId: req.body.doctorId,
       TimeIn: req.body.TimeIn,
